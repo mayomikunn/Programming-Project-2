@@ -1,0 +1,125 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public float movespeed = 20f;
+    public Transform movepoint;
+    public float horizontalInput;
+    public float verticalInput;
+
+    
+
+    private float Turns = 1f;
+
+    public float step = 0.5f; //Step distance
+
+    public float cTime = 0.5f; //Cooldown time 
+    private Vector2 targetposition;
+
+    // Start is called before the first frame update
+    void Start()
+    {   //To make player start at left hand side
+        transform.position = new Vector3(-11.2f, 0, 0);
+        //makes the movepoint not have a parent
+        movepoint.parent = null;
+
+
+    }
+
+    // Update is called once per frame
+
+
+    void Update()
+    {
+         float cooldown = Time.deltaTime;  // Making cooldown time into real time
+
+
+    float ydisplacement = 0f;  //Setting the x and y displacements to 0
+    float xdisplacement = 0f;  
+        if(Turns < cTime)
+        {
+            Turns += cooldown;    //If turns is less than cooldown time then add cooldown time to turns. This refills the movement when it is below the cooldown time
+        }
+        
+        if (Input.GetKey("up") && Turns >= cTime)// If the up key is pressed and turns is greater than or equal to cooldown time then make the y displacement = step distance
+        {
+            ydisplacement = step;
+            Turns -= cTime;  //Make turns = turns - cooldown time. This will exhaust the movement and start the cooldown.
+        }
+
+        if (Input.GetKey("down") && Turns >= cTime)//same as up
+        {
+            ydisplacement = -step;
+            Turns -= cTime;
+        }
+
+        if (Input.GetKey("right") && Turns >= cTime)//same as up
+        {
+            xdisplacement = step;
+            Turns -= cTime;
+        }
+
+        if (Input.GetKey("left") && Turns >= cTime)//same as up
+        {
+            xdisplacement = -step;
+            Turns -= cTime;
+        }
+        
+
+        targetposition = new Vector2(transform.position.x + xdisplacement , transform.position.y + ydisplacement ); //These add the displacements to the position of the player and allows it to move.
+        transform.position = targetposition;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*
+      
+        //Makes the player move towards the move point
+        transform.position = Vector3.MoveTowards(transform.position, movepoint.position, movespeed * Time.deltaTime);
+        
+        //only allow input from when the player is very close to the movepoint
+        if (Vector3.Distance(transform.position, movepoint.position) <= 0.5f)
+        {
+
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+            //To make the movepoint move in the direction of the input
+            //Mathf.Abs gives us absolute value so sign doesn't matter
+            if (Mathf.Abs(horizontalInput) > 0f)
+            {
+                movepoint.position += new Vector3(horizontalInput, 0f, 0f);
+
+            }
+            //else being used so that the player only has the option of moving horizontal and vertical
+            
+           else if (Mathf.Abs(verticalInput) > 0f)
+            {
+                movepoint.position += new Vector3(0f, verticalInput, 0f);
+
+
+            }
+        } */
+    }
+}
